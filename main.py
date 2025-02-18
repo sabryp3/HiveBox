@@ -1,7 +1,9 @@
 from fastapi import FastAPI
-from version import VERSION
 import requests
 import httpx
+from version import VERSION
+
+
 
 app = FastAPI()
 
@@ -22,28 +24,34 @@ def version_endpoint():
     return (f"Current software version: {version}")
 
 
-sensors = ["5eba5fbad46fb8001b799786",
+boxes = ["5eba5fbad46fb8001b799786",
            "5a77184229b729001a150c10",
-           "5ec950aed0545b001ca9a93e",
+           "5ec950aed0545b001ca9a93e"
            ]
 
-sensor_url = "https://api.opensensemap.org/boxes/"
+boxes_url = "https://api.opensensemap.org/boxes/"
+
+def get_temp(response):
+    x = 0
+    while True:
+            if response['sensors'][x]['title'].__contains__('Temperatur'):
+                sensor_temp = float(response ['sensors'][x]['lastMeasurement']['value'])
+                break    
+            x+=1
+    return sensor_temp
+
 
 @app.get("/temperature")
 def temp_endpoint():
-    for sensor_id in sensors:
-        temp_url = sensor_url+sensor_id
-        response = requests.get(temp_url,timeout=600).json()
-        total_temp = 0
-        x = 0
-        while True:
-            if response['sensors'][x]['title'].__contains__('Temperatur'):
-                sensor_temp = float(response ['sensors'][x]['lastMeasurement']['value'])
-                total_temp = total_temp+sensor_temp
-                break
-            x+=1
-    average = total_temp/3
+    temp_list = []
+    for id in boxes:
+        sensor_url = boxes_url+id
+        response = httpx.get(sensor_url,timeout=600).json()
+        sensor_temp = get_temp(response)
+        temp_list.append(sensor_temp)
+    average = sum(temp_list)/len(temp_list)
     return("average temperature is "+str(average))
+
 
 
 
