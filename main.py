@@ -33,12 +33,20 @@ boxes_url = "https://api.opensensemap.org/boxes/"
 
 def get_temp(response):
     x = 0
+    for sensor in response['sensors']:
+        if 'Temperatur' in sensor['title']:
+            sensor_temp = float(sensor['lastMeasurement']['value'])
+    return sensor_temp
+
+
+    """
     while True:
             if response['sensors'][x]['title'].__contains__('Temperatur'):
                 sensor_temp = float(response ['sensors'][x]['lastMeasurement']['value'])
                 break    
             x+=1
     return sensor_temp
+    """
 
 
 @app.get("/temperature")
