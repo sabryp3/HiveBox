@@ -32,7 +32,6 @@ boxes = ["5eba5fbad46fb8001b799786",
 boxes_url = "https://api.opensensemap.org/boxes/"
 
 def get_temp(response):
-    x = 0
     for sensor in response['sensors']:
         if 'Temperatur' in sensor['title']:
             sensor_temp = float(sensor['lastMeasurement']['value'])
