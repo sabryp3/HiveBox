@@ -39,16 +39,6 @@ def get_temp(response):
     return sensor_temp
 
 
-    """
-    while True:
-            if response['sensors'][x]['title'].__contains__('Temperatur'):
-                sensor_temp = float(response ['sensors'][x]['lastMeasurement']['value'])
-                break    
-            x+=1
-    return sensor_temp
-    """
-
-
 @app.get("/temperature")
 def temp_endpoint():
     temp_list = []
