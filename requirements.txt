@@ -1,6 +1,4 @@
 requests
 httpx
-
 fastapi
 uvicorn
-unittest
