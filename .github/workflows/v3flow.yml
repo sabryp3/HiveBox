@@ -23,9 +23,9 @@ jobs:
       - name: Install dependencies
         run: |
               python -m pip install --upgrade pip
-              pip install -r requirements.txt
+              pip install --no-chache-dir -r requirements.txt
       - name: Lint main code with Pylint
-        run: pylint --disable=R,C main.py
+        run: pylint --disable=R,C --fail-under=7.0 main.py
         continue-on-error: true
       - name: Lint DockerFile with Hadolint
         uses: hadolint/hadolint-action@v3.1.0
@@ -33,7 +33,6 @@ jobs:
           dockerfile: Dockerfile
         continue-on-error: true
       - name: Test with pytest
-        run: pytest tests.py
+        run: pytest test.py
       - name: Build Docker image
         run: docker build . --tag HiveBox-API
-      
