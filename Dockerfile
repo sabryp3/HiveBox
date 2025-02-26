@@ -5,7 +5,7 @@ WORKDIR /app
 
 # Install system dependencies required for build
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc python3-dev:latest
+    apt-get install -y --no-install-recommends gcc python3-dev
 
 # Create and activate virtual environment
 RUN python -m venv /opt/venv

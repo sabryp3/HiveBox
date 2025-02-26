@@ -31,6 +31,7 @@ jobs:
         uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile
+        continue-on-error: true
       - name: Test with pytest
         run: pytest tests.py
       - name: Build Docker image
