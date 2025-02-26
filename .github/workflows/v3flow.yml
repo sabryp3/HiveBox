@@ -35,4 +35,4 @@ jobs:
       - name: Test with pytest
         run: pytest test.py
       - name: Build Docker image
-        run: docker build . --tag HiveBox-API
+        run: docker build . --tag hivebox-api
