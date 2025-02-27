@@ -1,5 +1,5 @@
-requests
-httpx
+requests>=2.32.0
+httpx>=0.28.1
 uvicorn
 pylint
 pytest
