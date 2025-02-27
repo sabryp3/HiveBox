@@ -1,6 +1,6 @@
 requests
 httpx
-fastapi
 uvicorn
 pylint
 pytest
+fastapi[standard]>=0.115.9
