@@ -5,7 +5,12 @@ on:
     branches:
       - main
   workflow_dispatch:
-   
+
+
+permissions:
+  contents: read   # Only allow reading code
+  actions: read    # Only read GitHub Actions
+  security-events: write  # If needed for security scans
 
 jobs:
   build:
