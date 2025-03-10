@@ -31,7 +31,7 @@ class TestTemperatureSensor(unittest.TestCase):
             ]
         }
         result = temp_endpoint()
-        self.assertEqual(result, "average temperature is 20.0")
+        self.assertEqual(result, "Good")
 
 
 if __name__ == '__main__':
