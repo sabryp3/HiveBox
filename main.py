@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from prometheus_fastapi_instrumentator import Instrumentator
 import httpx 
 from version import VERSION
 
@@ -8,6 +9,9 @@ from version import VERSION
 load_dotenv()
 
 app = FastAPI()
+
+# Instrument your app with default metrics and expose the metrics with /metrics endpoint
+Instrumentator().instrument(app).expose(app)
 
 def get_version() -> str:
     """Returns the current version of the software."""
