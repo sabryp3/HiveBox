@@ -27,8 +27,10 @@ WORKDIR /app
 COPY --from=builder /opt/venv /opt/venv
 
 # Copy only necessary application files
-COPY --from=builder /app/main.py .
+COPY --from=builder /app/main.py . 
 COPY --from=builder /app/version.py .
+# Copy the .env file
+COPY --from=builder /app/.env .  
 
 # Set environment variables
 ENV PATH="/opt/venv/bin:$PATH"
