@@ -17,7 +17,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
+
+      - name: Cache node modules
+        id: cache-pip
+        uses: actions/cache@v4
+        with:
+          # pip cache files are stored in `~/.cache/pip` on Linux
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-build-${{ hashFiles('requirements.txt') }}
+
+      - if: ${{ steps.cache-pip.outputs.cache-hit != 'true' }}
+        name: Set up Python
+        continue-on-error: true
         # This is the version of the action for setting up Python, not the Python version.
         uses: actions/setup-python@v5
         with:
@@ -25,7 +36,7 @@ jobs:
           python-version: '3.12.x'
           # Optional - x64 or x86 architecture, defaults to x64
           architecture: 'x64'
-          cache: 'pip' # caching pip dependencies
+      
       # You can test your matrix by printing the current Python version
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
