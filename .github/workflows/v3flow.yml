@@ -68,8 +68,8 @@ jobs:
 
       - uses: mr-smithers-excellent/docker-build-push@v6
         with:
-            image: sabryp3/hivebox
-            registry: ghcr.io
+            image: hivebox
+            registry: ghcr.io/sabryp3
             tags: v1, latest
             username: sabryp3
             password: ${{ secrets.TOKEN }}
