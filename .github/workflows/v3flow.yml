@@ -68,7 +68,7 @@ jobs:
 
       - uses: mr-smithers-excellent/docker-build-push@v6
         with:
-            image: sabryp3/HiveBox
+            image: sabryp3/hivebox
             registry: ghcr.io
             tags: v1, latest
             username: sabryp3
