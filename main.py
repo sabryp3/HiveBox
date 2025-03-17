@@ -1,10 +1,17 @@
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI
-import httpx
+from prometheus_fastapi_instrumentator import Instrumentator
+import httpx 
 from version import VERSION
 
-
+# Load environment variables
+load_dotenv()
 
 app = FastAPI()
+
+# Instrument your app with default metrics and expose the metrics with /metrics endpoint
+Instrumentator().instrument(app).expose(app)
 
 def get_version() -> str:
     """Returns the current version of the software."""
@@ -22,14 +29,14 @@ def version_endpoint():
     version = get_version()
     return (f"Current software version: {version}")
 
+# getting boxes IDs
+boxes = os.getenv("BOXES").split(",")
+print(boxes)
 
-boxes = ["5eba5fbad46fb8001b799786",
-           "5a77184229b729001a150c10",
-           "5ec950aed0545b001ca9a93e"
-           ]
+# getting API URL of Boxes
+boxes_url = os.getenv("BOXES_URL")
 
-boxes_url = "https://api.opensensemap.org/boxes/"
-
+# getting the temperature from the provided API response
 def get_temp(response):
     for sensor in response['sensors']:
         if 'Temperatur' in sensor['title']:
@@ -46,7 +53,13 @@ def temp_endpoint():
         sensor_temp = get_temp(response)
         temp_list.append(sensor_temp)
     average = sum(temp_list)/len(temp_list)
-    return("average temperature is "+str(average))
+    if average <= 10:
+        return("Too cold")
+    elif 11 <= average <= 26:
+        return("Good")
+    else:
+        return("Too hot")
+
 
 
 

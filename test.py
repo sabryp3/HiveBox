@@ -1,7 +1,12 @@
 import unittest
+from fastapi.testclient import TestClient
 from unittest.mock import patch 
-from main import temp_endpoint, get_temp
+from main import temp_endpoint, get_temp, app
 from version import VERSION
+
+client = TestClient(app)
+
+
 
 class TestVersion(unittest.TestCase):
         def test_returns_correct_version(self):
@@ -31,8 +36,12 @@ class TestTemperatureSensor(unittest.TestCase):
             ]
         }
         result = temp_endpoint()
-        self.assertEqual(result, "average temperature is 20.0")
+        self.assertEqual(result, "Good")
 
+class Testintegration(unittest.TestCase):
+    def test_temp_integration(self):
+        response = client.get("/temperature")
+        assert response.status_code == 200
 
 if __name__ == '__main__':
         unittest.main()
