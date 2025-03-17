@@ -21,7 +21,7 @@ jobs:
         only_warn: true
         sarif_upload: true
         #non_recursive:
-        iac_dir: 'HiveBox/k8s/'
+        iac_dir: 'k8s/'
         #policy_path:
         #skip_rules:
         #config_path:
