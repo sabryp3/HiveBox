@@ -1,6 +1,7 @@
 
 name: Terrascan flow
 on:
+  push:
   workflow_dispatch:
 
 jobs:
