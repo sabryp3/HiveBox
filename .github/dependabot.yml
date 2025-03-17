@@ -1,0 +1,9 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"   # e.g., npm, pip, docker, github-actions
+    directory: "/"             # Path to manifest files
+    schedule:
+      interval: "weekly"       # daily, weekly, monthly
+    open-pull-requests-limit: 5  # Limits concurrent PRs
+    labels:                    # Custom labels for PRs
+      - "dependencies"
