@@ -19,19 +19,15 @@ jobs:
         iac_version: 'v1'
         policy_type: 'k8s'
         only_warn: true
-        sarif_upload: true-action/init@v3
-      with:
-        languages: python
-        iac_dir: 'k8s/'
+        sarif_upload: true
         #non_recursive:
+        iac_dir: 'k8s/'
         #policy_path:
         #skip_rules:
         #config_path:
         #webhook_url:
         #webhook_token:
-        
-    - name: Upload
-
-    - name: Perform CodeQL Analysis
-      uses: github SARIF file
-      uses: github/codeql-action/upload/codeql-action/analyze@v3     
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: terrascan.sarif
