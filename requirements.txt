@@ -7,3 +7,5 @@ fastapi[standard]>=0.115.9
 python-dotenv
 prometheus-fastapi-instrumentator
 redis
+pytest-asyncio
+pytest-mock

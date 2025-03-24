@@ -18,12 +18,12 @@ redis = None
 async def lifespan(app: FastAPI):
     global redis
     # Startup logic
-    redis = await aioredis.from_url(os.getenv("REDIS_URL", "redis://localhost:6379"))
+    redis = await Redis.from_url(os.getenv("REDIS_URL", "redis://localhost:6379"))
     try:
         yield
     finally:
         # Shutdown logic
-        await redis.close()
+        await redis.aclose()
 
 # Pass the lifespan context manager to the FastAPI app
 app = FastAPI(lifespan=lifespan)
