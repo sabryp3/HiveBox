@@ -1,31 +1,36 @@
 import os
 from dotenv import load_dotenv
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
 import httpx 
-import aioredis 
+from redis.asyncio import Redis
 from version import VERSION
+
 
 # Load environment variables
 load_dotenv()
 
-app = FastAPI()
+# Initialize Redis connection
+redis = None
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global redis
+    # Startup logic
+    redis = await aioredis.from_url(os.getenv("REDIS_URL", "redis://localhost:6379"))
+    try:
+        yield
+    finally:
+        # Shutdown logic
+        await redis.close()
+
+# Pass the lifespan context manager to the FastAPI app
+app = FastAPI(lifespan=lifespan)
 
 # Instrument your app with default metrics and expose the metrics with /metrics endpoint
 Instrumentator().instrument(app).expose(app)
 
-# Initialize Redis connection
-redis = None
-
-@app.on_event("startup")
-async def startup_event():
-    global redis
-    redis = await aioredis.from_url(os.getenv("REDIS_URL", "redis://localhost:6379"))
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    await redis.close()
-   
 def get_version() -> str:
     """Returns the current version of the software."""
     return VERSION 
@@ -88,6 +93,6 @@ async def temp_endpoint():
 
 
 
-   
+
 
 
