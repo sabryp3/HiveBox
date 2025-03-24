@@ -33,6 +33,9 @@ spec:
         name: hivebox
         ports:
         - containerPort: 8000
+        env:
+        - name: REDIS_URL
+          value: "redis://valkey-svc:6379" #refering the chache service
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
