@@ -1,12 +1,13 @@
+import asyncio
 import os
-from dotenv import load_dotenv
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from dotenv import load_dotenv
+from fastapi import FastAPI, HTTPException
 from prometheus_fastapi_instrumentator import Instrumentator
+from minio import Minio
 import httpx 
 from redis.asyncio import Redis
 from version import VERSION
-
 
 # Load environment variables
 load_dotenv()
@@ -19,10 +20,12 @@ async def lifespan(app: FastAPI):
     global redis
     # Startup logic
     redis = await Redis.from_url(os.getenv("REDIS_URL", "redis://localhost:6379"))
+    minio_task = asyncio.create_task(schedule_minio_upload())  # Start the Minio upload task
     try:
         yield
     finally:
         # Shutdown logic
+        minio_task.cancel()  # Cancel the Minio upload task
         await redis.aclose()
 
 # Pass the lifespan context manager to the FastAPI app
@@ -87,12 +90,30 @@ async def temp_endpoint():
     else:
         return("Too hot")
 
+# Initialize Minio client
+client = Minio(
+    "play.min.io",
+    access_key=os.getenv("MINIO_ACCESS_KEY"),
+    secret_key=os.getenv("MINIO_SECRET_KEY"),
+    secure=False
+)
+# upload the cached temperature to Minio
+async def stream_minio():
+    cached_temp = await redis.get("average_temperature")
+    if not cached_temp:
+        raise HTTPException(status_code=404, detail="No cached temperature found")
+    result = client.put_object(
+    "hive-bucket", "hive-temp", cached_temp, length=-1, part_size=10*1024*1024,
+)
 
 
+# upload the cached temperature to Minio every 5 minutes
+async def schedule_minio_upload():
+    while True:
+        await stream_minio()  # Add await here to properly call the coroutine
+        await asyncio.sleep(300)  # Sleep for 5 minutes
 
-
-
-
-
-
-
+@app.get("/store")
+async def stream_minio_endpoint():
+    await stream_minio()
+    return("Cached temperature uploaded to Minio")

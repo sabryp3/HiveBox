@@ -9,3 +9,4 @@ prometheus-fastapi-instrumentator
 redis
 pytest-asyncio
 pytest-mock
+minio
