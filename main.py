@@ -8,6 +8,7 @@ from minio import Minio
 import httpx 
 from redis.asyncio import Redis
 from version import VERSION
+import io
 
 # Load environment variables
 load_dotenv()
@@ -102,9 +103,18 @@ async def stream_minio():
     cached_temp = await redis.get("average_temperature")
     if not cached_temp:
         raise HTTPException(status_code=404, detail="No cached temperature found")
+    
+    # Wrap the bytes object in a file-like object
+    cached_temp_stream = io.BytesIO(cached_temp)
+    
+    # Upload the file-like object to Minio
     result = client.put_object(
-    "hive-bucket", "hive-temp", cached_temp, length=-1, part_size=10*1024*1024,
-)
+        "hive-bucket",  # Bucket name
+        "hive-temp",    # Object name
+        cached_temp_stream,  # File-like object
+        length=len(cached_temp),  # Length of the data
+        part_size=10*1024*1024,  # Part size for multipart uploads
+    )
 
 
 # upload the cached temperature to Minio every 5 minutes
