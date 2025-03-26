@@ -96,7 +96,7 @@ client = Minio(
     "play.min.io:9000",
     access_key=os.getenv("MINIO_ACCESS_KEY"),
     secret_key=os.getenv("MINIO_SECRET_KEY"),
-    secure=False
+    secure=True
 )
 # upload the cached temperature to Minio
 async def stream_minio():
