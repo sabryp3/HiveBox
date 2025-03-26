@@ -100,10 +100,23 @@ client = Minio(
 )
 # upload the cached temperature to Minio
 async def stream_minio():
+    # Fetch the cached temperature from Redis
     cached_temp = await redis.get("average_temperature")
-    if not cached_temp:
-        raise HTTPException(status_code=404, detail="No cached temperature found")
     
+    # If no cached temperature is found, fetch and cache it
+    if not cached_temp:
+        temp_list = []
+        for id in boxes:
+            sensor_url = boxes_url + id
+            response = httpx.get(sensor_url, timeout=600).json()
+            sensor_temp = get_temp(response)
+            temp_list.append(sensor_temp)
+        average = sum(temp_list) / len(temp_list)
+        
+        # Cache the result in Redis
+        cached_temp = str(average).encode("utf-8")  # Convert to bytes for Redis
+        await redis.set("average_temperature", cached_temp, ex=300)  # Cache for 5 minutes
+
     # Wrap the bytes object in a file-like object
     cached_temp_stream = io.BytesIO(cached_temp)
     
