@@ -93,7 +93,7 @@ async def temp_endpoint():
 
 # Initialize Minio client
 client = Minio(
-    "play.min.io",
+    "play.min.io:9000",
     access_key=os.getenv("MINIO_ACCESS_KEY"),
     secret_key=os.getenv("MINIO_SECRET_KEY"),
     secure=False
