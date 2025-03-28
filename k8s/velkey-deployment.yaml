@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: valkey-cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: valkey-cache
+  template:
+    metadata:
+      labels:
+        app: valkey-cache
+    spec:
+      containers:
+      - name: valkey-cache
+        image: valkey/valkey:latest
+        ports:
+        - containerPort: 6379
