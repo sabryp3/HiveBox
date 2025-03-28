@@ -96,7 +96,7 @@ async def readiness():
     x=0
     for id in boxes:
         sensor_url = boxes_url+id
-        response = httpx.get(sensor_url,timeout=600).json()
+        response = httpx.get(sensor_url,timeout=600)
         if response.status_code == 200:
             x+=1
         else:
