@@ -91,6 +91,24 @@ async def temp_endpoint():
     else:
         return("Too hot")
 
+@app.get("/readyz")
+async def readiness():
+    x=0
+    for id in boxes:
+        sensor_url = boxes_url+id
+        response = httpx.get(sensor_url,timeout=600).json()
+        if response.status_code == 200:
+            x+=1
+        else:
+            continue
+    if x >= (len(boxes)/2):
+        raise HTTPException(status_code=200, detail="Service is ready")
+    else:
+        raise HTTPException(status_code=503, detail="Service unavailable")
+
+
+
+
 # Initialize Minio client
 client = Minio(
     "play.min.io:9000",
