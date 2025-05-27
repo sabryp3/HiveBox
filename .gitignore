@@ -8,3 +8,5 @@ __pycache__/*
 *.tfstate.*
 *.terraform.lock.hcl
 terraform-infrastructure/.terraform/*
+.terraform/
+.terraform.lock.hcl
