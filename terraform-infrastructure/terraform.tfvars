@@ -23,7 +23,7 @@ private_subnet_cidr_blocks = [
 cluster_name="my-eks-app"
 cluster_version="1.29"
 desired_capacity = 1
-instance_types = "t3.small"
+instance_types = ["t3.small"]
 max_capacity =1
 min_capacity =1
 

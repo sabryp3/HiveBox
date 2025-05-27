@@ -10,3 +10,4 @@ __pycache__/*
 terraform-infrastructure/.terraform/*
 .terraform/
 .terraform.lock.hcl
+*.swp
