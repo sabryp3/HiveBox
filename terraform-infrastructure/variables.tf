@@ -8,10 +8,6 @@ variable "environment" {
 
 
 
-############# ECR ##########
-variable "ecr_repo_name" {
-    description = "The name of the ECR Repository"
-}
 
 ############# VPC ############
 variable "vpc_cidr" {
