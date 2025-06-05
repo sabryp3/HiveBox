@@ -3,7 +3,7 @@ entries:
   hivechart-1:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-06-05T19:39:53.509583395+01:00"
+    created: "2025-06-05T19:51:00.218850152+01:00"
     description: A Helm chart for Kubernetes
     digest: 9eb9c5e29455623f5900356b444a512d0cdcceae00a1af9013c89dc87eacdff3
     name: hivechart-1
@@ -11,4 +11,4 @@ entries:
     urls:
     - https://sabryp3.github.io/HiveBox/hivechart-1-0.2.0.tgz
     version: 0.2.0
-generated: "2025-06-05T19:39:53.508446694+01:00"
+generated: "2025-06-05T19:51:00.217731835+01:00"
