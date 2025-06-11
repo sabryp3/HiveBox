@@ -113,6 +113,7 @@ jobs:
             cluster-name: ${{ vars.EKS_CLUSTER }}
             chart-path: Helm
             name: hivebox-stack
+            helm-extra-args: --force
         
         - name: Show Pods
           run: kubectl get pod -A

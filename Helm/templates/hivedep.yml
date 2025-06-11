@@ -1,20 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: "2025-03-13T14:00:44Z"
-  generation: 1
   annotations:
     prometheus.io/scrape: "true"
     prometheus.io/port: "true"
   labels:
     app: hivebox
   name: hivebox
-  resourceVersion: "53037"
-  uid: 0d9311c8-04c9-4cad-8de6-b4136f0f4077
 spec:
-  progressDeadlineSeconds: 600
   replicas: {{.Values.replicas }}
-  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app: hivebox
@@ -25,7 +19,6 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      creationTimestamp: null
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "true"
@@ -51,4 +44,3 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
-status: {}
