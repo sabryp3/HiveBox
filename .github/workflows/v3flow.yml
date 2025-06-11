@@ -112,8 +112,6 @@ jobs:
             aws-region: ${{ vars.AWS_REGION }}
             cluster-name: ${{ vars.EKS_CLUSTER }}
             chart-path: Helm
-            namespace: default
-            values: appimage=${{ secrets.REGISTRY }}/${{ env.ECR_REPOSITORY }},apptag=${{ github.run_number }}
             name: hivebox-stack
         
         - name: Show Pods
