@@ -3,3 +3,11 @@ venv/
 __pycache__/
 __pycache__/*
 .qodo
+*.terraform/
+*.tfstate
+*.tfstate.*
+*.terraform.lock.hcl
+terraform-infrastructure/.terraform/*
+.terraform/
+.terraform.lock.hcl
+*.swp

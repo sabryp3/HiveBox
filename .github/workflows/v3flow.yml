@@ -1,4 +1,4 @@
-name: HiveBox image
+name: CI/CD HiveBox image
 
 on: 
   push:
@@ -73,4 +73,46 @@ jobs:
             tags: v1, latest
             username: sabryp3
             password: ${{ secrets.TOKEN }}
+  DeployToEKS:
+    needs: Build-and-Push-image
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout source code
+          uses: actions/checkout@v4
 
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ vars.AWS_REGION }}
+        
+        - name: Get Kubernetes config
+          id: getconfig
+          run: aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER }} --region ${{ vars.AWS_REGION }}
+
+        - name: Login to githubIO
+          run: |
+            kubectl get secret github-sec || \
+            kubectl create secret docker-registry github-sec \
+              --docker-server=ghcr.io/sabryp3 \
+              --docker-username=sabryp3 \
+              --docker-password=${{secrets.TOKEN}}
+
+        - name: Deploy with Helm
+          uses: bitovi/github-actions-deploy-eks-helm@v1.2.12
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ vars.AWS_REGION }}
+            cluster-name: ${{ vars.EKS_CLUSTER }}
+            chart-path: Helm
+            namespace: default
+            values: appimage=${{ secrets.REGISTRY }}/${{ env.ECR_REPOSITORY }},apptag=${{ github.run_number }}
+            name: hivebox-stack
+        
+        - name: Show Pods
+          run: kubectl get pod -A
+        
+        - name: Show SVC
+          run: kubectl get svc
