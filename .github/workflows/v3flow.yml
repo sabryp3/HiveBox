@@ -98,6 +98,11 @@ jobs:
               --docker-server=ghcr.io/sabryp3 \
               --docker-username=sabryp3 \
               --docker-password=${{secrets.TOKEN}}
+        
+        - name: Create namespace if not exists
+          run: |
+            kubectl get namespace monitoring || kubectl create namespace monitoring
+
 
         - name: Deploy with Helm
           uses: bitovi/github-actions-deploy-eks-helm@v1.2.12
