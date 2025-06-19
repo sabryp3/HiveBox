@@ -7,6 +7,10 @@ HiveBox
 
 HiveBox is a FastAPI-based application designed to monitor and aggregate the temperature readings from three specified sensors. It provides API endpoints to retrieve sensor temperatures, calculate the average, store the result in a Minio bucket, check sensor readiness, and report the application version. The app uses Redis for caching and is built for deployment on AWS EKS, leveraging Kubernetes manifests and a Dockerized workflow. CI/CD automation and security are integrated through GitHub Actions.
 
+This repo is the implementation of the hands-on project HiveBox provided by the Dynamic DevOps Roadmap.
+
+The HiveBox project is divided into phases where each phase contains incremental steps to complete the full project and exist in the corresponding branch.
+
 **Features**
 
 - **/temperature**: Retrieve the average temperature from three sensors. Returns a qualitative assessment ("Too cold", "Good", "Too hot") based on the average.
