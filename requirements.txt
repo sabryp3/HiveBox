@@ -3,7 +3,7 @@ httpx>=0.28.1
 uvicorn
 pylint
 pytest
-fastapi[standard]>=0.115.9
+fastapi[standard]>=0.138.1
 python-dotenv
 prometheus-fastapi-instrumentator
 redis
